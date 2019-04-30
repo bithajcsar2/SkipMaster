@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -20,11 +21,11 @@
          </font>
       </Label>
       <TextField fx:id="registerneptun" layoutX="179.0" layoutY="76.0" />
-      <TextField fx:id="registerpwd" layoutX="179.0" layoutY="123.0" />
       <Label layoutX="150.0" layoutY="14.0" text="Regisztráció">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
+      <PasswordField fx:id="registerpwd" layoutX="179.0" layoutY="124.0" />
    </children>
 </AnchorPane>

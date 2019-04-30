@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 
@@ -15,7 +16,7 @@ public class RegisterScreenController implements Initializable {
     @FXML
     private TextField registerneptun; //regisztrációs ablak neptunID mezője
     @FXML
-    private TextField registerpwd;    //regisztrációs ablak jelszó mezője
+    private PasswordField registerpwd;    //regisztrációs ablak jelszó mezője
 
     
     @Override

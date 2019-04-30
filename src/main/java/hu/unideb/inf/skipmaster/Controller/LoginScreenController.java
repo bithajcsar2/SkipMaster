@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ public class LoginScreenController implements Initializable {
     @FXML
     private TextField loginneptun; //bejelentkezési ablak neptunID mezője
     @FXML
-    private TextField loginpwd; //bejelentkezési ablak jelszó mezője
+    private PasswordField loginpwd; //bejelentkezési ablak jelszó mezője
     
  
     @Override
