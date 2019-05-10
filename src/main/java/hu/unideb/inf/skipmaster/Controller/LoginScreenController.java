@@ -74,12 +74,11 @@ public class LoginScreenController implements Initializable {
                         System.out.println("Még nincsenek feltöltve a tárgyaid, tedd meg most! ;)");
                         loadDataFromFile("targyak.csv", stmt); //Ide kell majd a path a fájlhoz a tallózásból.
                    }
-			 
                   }
                 }else{
                     System.out.println("Hibás neptunID/Nincs regisztrálva"); //Ez mehet majd a GUI-ra
                 }
-
+                connection.close();
            }catch(Exception e){
                System.out.println(e);
            }
@@ -149,4 +148,17 @@ public class LoginScreenController implements Initializable {
             System.out.println(e);
         }        
     }
+    /*
+    Ez majd akkor kell, ha meglesz a felhasználói felület a tárgyakhoz
+    selectedCourse: amelyik tárgyat skipelte
+    selectedCourseType: előadás|gyakorlat|labor
+    private void increaseSkip(){
+        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+            Statement stmt=connection.createStatement();
+            stmt.executeQuery("update " + loginneptun.getText() + " set numberOfSkips = numberOfSkips+1 where course = '" + selectedCourse + "' and course_type = '" + selectedCourseType + "';");
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    */
 }

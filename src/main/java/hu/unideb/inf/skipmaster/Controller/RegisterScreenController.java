@@ -56,6 +56,7 @@ public class RegisterScreenController implements Initializable {
                         stmt.executeQuery("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
                         System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
                     }
+                    connection.close();
                  }
             }catch(Exception e){
                 System.out.println(e.getMessage());
