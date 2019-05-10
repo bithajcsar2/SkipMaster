@@ -46,13 +46,15 @@ public class RegisterScreenController implements Initializable {
                 while (hashedPwd.length() < 32) { 
                     hashedPwd = "0" + hashedPwd; 
                 }
-                 try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?user=root&password=asd123")) {
+                 try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
                     Statement stmt=connection.createStatement();
                     ResultSet rs=stmt.executeQuery("select neptunID from user where neptunID = '" + registerneptun.getText() + "';");
                     if(rs.next()){
                        System.out.println("Ez a neptun-kód már regisztrálva van.");
                     }else{
-                        rs=stmt.executeQuery("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
+                        stmt.executeQuery("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
+                        stmt.executeQuery("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
+                        System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
                     }
                  }
             }catch(Exception e){
