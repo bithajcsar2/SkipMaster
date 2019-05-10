@@ -18,18 +18,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 
 public class LoginScreenController implements Initializable {
-    
+            
     @FXML
     private TextField loginneptun; //bejelentkezési ablak neptunID mezője
     @FXML
     private PasswordField loginpwd; //bejelentkezési ablak jelszó mezője
-    
+    @FXML
+    private Button loginbutton;
  
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -39,13 +41,15 @@ public class LoginScreenController implements Initializable {
     }    
 
     @FXML
-    private void loginButtonPressed(ActionEvent event)
+    private void loginButtonPressed(ActionEvent event) throws IOException
     {
         //bejelentkezési ablak Belépés gombjának lenyomása
         /*
             Itt kéne megcsinálni az adabázisból a lekérdezést
             
         */
+        boolean successful_login = true; //hiba esetén is megnyílik a mainscreen; később vissza kell állítani falsera
+        
         if(loginneptun.getText().isEmpty() || loginpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
         }else{
@@ -74,6 +78,7 @@ public class LoginScreenController implements Initializable {
                         System.out.println("Még nincsenek feltöltve a tárgyaid, tedd meg most! ;)");
                         loadDataFromFile("targyak.csv", stmt); //Ide kell majd a path a fájlhoz a tallózásból.
                    }
+                   successful_login = true;
                   }
                 }else{
                     System.out.println("Hibás neptunID/Nincs regisztrálva"); //Ez mehet majd a GUI-ra
@@ -83,6 +88,20 @@ public class LoginScreenController implements Initializable {
                System.out.println(e);
            }
         }
+        
+        if (successful_login) //ha sikeresen belépett a felhasználó, megnyílik a main screen, a login pedig bezáródik
+        {
+            Parent root3 = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/MainScreen.fxml"));
+            Stage stage2 = new Stage();
+            stage2.setTitle("SkipMaster");
+            Scene scene = new Scene(root3);
+            scene.getStylesheets().add("/styles/Styles.css");
+            stage2.setScene(scene);
+            stage2.show();
+            Stage stage = (Stage) loginbutton.getScene().getWindow();
+            stage.close();
+        }
+
     }
 
     @FXML
