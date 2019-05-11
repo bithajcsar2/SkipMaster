@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -25,6 +26,8 @@ public class RegisterScreenController implements Initializable {
     private TextField registerneptun; //regisztrációs ablak neptunID mezője
     @FXML
     private PasswordField registerpwd;    //regisztrációs ablak jelszó mezője
+    @FXML
+    private Button registerButton;
     
     private String hashedPwd;
 
@@ -68,6 +71,8 @@ public class RegisterScreenController implements Initializable {
                     }else{
                         stmt.executeUpdate("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
                         stmt.executeUpdate("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), remainingSkips int default 3, primary key(id));");
+                        Stage stage = (Stage) registerButton.getScene().getWindow();
+                        stage.close();
                         System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Database inormation");
