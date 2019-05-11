@@ -16,25 +16,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.skipmaster.Controller.MainScreenController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.skipmaster.Controller.MainScreenController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <TabPane prefHeight="507.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane prefHeight="507.0" prefWidth="646.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="Óráid">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="424.0" prefWidth="640.0">
                            <children>
                               <Button fx:id="syncData" layoutX="453.0" layoutY="14.0" mnemonicParsing="false" onAction="#syncWithDB" text="Szinkronizálás az adatbázissal" />
-                              <ScrollPane layoutY="85.0" prefHeight="392.0" prefWidth="640.0">
+                              <ScrollPane layoutY="85.0" prefHeight="393.0" prefWidth="646.0">
                                  <content>
-                                    <GridPane fx:id="table" prefHeight="25.0" prefWidth="640.0">
+                                    <GridPane fx:id="table" prefHeight="50.0" prefWidth="645.0">
                                       <columnConstraints>
-                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints halignment="CENTER" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
-                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
+                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="280.0" minWidth="10.0" prefWidth="236.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="0.0" prefWidth="89.0" />
+                                          <ColumnConstraints halignment="CENTER" maxWidth="227.0" minWidth="10.0" prefWidth="152.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="64.0" />
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="104.0" />
                                       </columnConstraints>
                                       <rowConstraints>
                                         <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="NEVER" />
@@ -43,12 +44,13 @@
                                     </GridPane>
                                  </content>
                               </ScrollPane>
-                              <GridPane gridLinesVisible="true" layoutY="60.0" prefHeight="0.0" prefWidth="640.0">
+                              <GridPane gridLinesVisible="true" layoutY="60.0" prefHeight="25.0" prefWidth="646.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="ALWAYS" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="169.0" minWidth="10.0" prefWidth="164.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="74.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="115.0" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
@@ -70,6 +72,7 @@
                                           <Font size="13.0" />
                                        </font>
                                     </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Add" GridPane.columnIndex="4" />
                                  </children>
                               </GridPane>
                               <ImageView fitHeight="59.0" fitWidth="65.0" layoutX="23.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">

@@ -99,6 +99,7 @@ public class MainScreenController implements Initializable {
         Label numberOfSkips = new Label(Integer.toString(remainingSkips));
         
         Button skipBtn = new Button("Skip");
+        Button addBtn = new Button("Add");
         final String id = course.getText();
         final String id2 = course_type.getText();
         skipBtn.setOnMouseClicked(new EventHandler() {
@@ -107,8 +108,16 @@ public class MainScreenController implements Initializable {
                 Skipped(id,id2);
             }   
         });
+        
+        addBtn.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Added(id,id2);
+            }   
+        });
+        
         courses.add(new Course(course.getText(), course_type.getText(), remainingSkips));
-        fillTable(table, course, course_type, numberOfSkips, skipBtn);
+        fillTable(table, course, course_type, numberOfSkips, skipBtn, addBtn);
 
         localVersion++;
         
@@ -151,7 +160,7 @@ public class MainScreenController implements Initializable {
         */
     }
     
-    private void fillTable(GridPane table, Label course, Label course_type, Label remainingSkips, Button skipBtn){
+    private void fillTable(GridPane table, Label course, Label course_type, Label remainingSkips, Button skipBtn, Button addBtn){
         if(Integer.parseInt(remainingSkips.getText()) == 0){
             course.setTextFill(Color.RED);
             course_type.setTextFill(Color.RED);
@@ -163,9 +172,14 @@ public class MainScreenController implements Initializable {
         table.add(course, 0, numberOfCourses);
         table.add(course_type, 1, numberOfCourses);
         table.add(remainingSkips, 2, numberOfCourses);
+        
+        table.add(addBtn, 4, numberOfCourses);
+        
         GridPane.setMargin(course, new Insets(0,0,0,5));
         GridPane.setMargin(course_type, new Insets(0,0,0,5));
         GridPane.setMargin(remainingSkips, new Insets(0,0,0,5));
+        GridPane.setMargin(addBtn, new Insets(0,5,0,0));
+
         numberOfCourses++;
     }
     
@@ -175,6 +189,7 @@ public class MainScreenController implements Initializable {
         Label course_type;
         Label remainingSkips;
         Button skipBtn;
+        Button addBtn;
         int remSkips;
         ResultSet rs;
         
@@ -197,15 +212,23 @@ public class MainScreenController implements Initializable {
                         remainingSkips = new Label(Integer.toString(remSkips));
                         courses.add(new Course(course.getText(), course_type.getText(), remSkips));
                         skipBtn = new Button("Skip");
+                        addBtn = new Button("Add");
                         final String id = course.getText();
                         final String id2 = course_type.getText();
                         skipBtn.setOnMouseClicked(new EventHandler() {
                             @Override
                             public void handle(Event event) {
                                 Skipped(id,id2);
-                            }
+                            }   
                         });
-                        fillTable(table, course, course_type, remainingSkips, skipBtn);
+
+                        addBtn.setOnMouseClicked(new EventHandler() {
+                            @Override
+                            public void handle(Event event) {
+                                Added(id,id2);
+                            }   
+                        });
+                        fillTable(table, course, course_type, remainingSkips, skipBtn, addBtn);
                         localVersion = remoteVersion;
                     }
                 }else if(localVersion > remoteVersion){
@@ -220,15 +243,23 @@ public class MainScreenController implements Initializable {
                         remSkips = c.getNumberOfSkips();
                         remainingSkips = new Label(Integer.toString(remSkips));
                         skipBtn = new Button("Skip");
+                        addBtn = new Button("Add");
                         final String id = course.getText();
                         final String id2 = course_type.getText();
                         skipBtn.setOnMouseClicked(new EventHandler() {
                             @Override
                             public void handle(Event event) {
                                 Skipped(id,id2);
-                            }
+                            }   
                         });
-                        fillTable(table, course, course_type, remainingSkips, skipBtn);
+
+                        addBtn.setOnMouseClicked(new EventHandler() {
+                            @Override
+                            public void handle(Event event) {
+                                Added(id,id2);
+                            }   
+                        });
+                        fillTable(table, course, course_type, remainingSkips, skipBtn, addBtn);
                         stmt.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type, remainingSkips) values('" + c.getCourse() + "', '" + c.getCourse_type() + "'," + c.getNumberOfSkips() + ");");
                     }
                     stmt.executeUpdate("update user set version = '" + localVersion + "' where neptunID = '" + LoginScreenController.userLoggedIn + "';");
@@ -246,15 +277,23 @@ public class MainScreenController implements Initializable {
                 remSkips = c.getNumberOfSkips();
                 remainingSkips = new Label(Integer.toString(remSkips));
                 skipBtn = new Button("Skip");
+                addBtn = new Button("Add");
                 final String id = course.getText();
                 final String id2 = course_type.getText();
                 skipBtn.setOnMouseClicked(new EventHandler() {
                     @Override
                     public void handle(Event event) {
                         Skipped(id,id2);
-                    }
+                    }   
                 });
-                fillTable(table, course, course_type, remainingSkips, skipBtn);
+
+                addBtn.setOnMouseClicked(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Added(id,id2);
+                    }   
+                });
+                fillTable(table, course, course_type, remainingSkips, skipBtn, addBtn);
             }
         }
     }
@@ -328,6 +367,15 @@ public class MainScreenController implements Initializable {
         for(Course c : courses){
             if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type)){
                 c.setNumberOfSkips(c.getNumberOfSkips()-1);
+            }
+        }
+        localVersion++;
+        loadTable(false);
+    }
+     private void Added(String course, String course_type){
+        for(Course c : courses){
+            if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type)){
+                c.setNumberOfSkips(c.getNumberOfSkips()+1);
             }
         }
         localVersion++;
