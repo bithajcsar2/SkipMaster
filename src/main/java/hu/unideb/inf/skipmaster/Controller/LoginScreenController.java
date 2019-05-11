@@ -2,6 +2,7 @@
 package hu.unideb.inf.skipmaster.Controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -20,6 +21,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -32,8 +36,9 @@ public class LoginScreenController implements Initializable {
     @FXML
     private Button loginbutton;
     @FXML
-    private Button testConnectionButton;
-    
+    private ImageView connectionIndicatorPic;
+    @FXML
+    private Text databaseOKText;
     
     public static String userLoggedIn; //A bejelentkezett user felhasználóneve
     
@@ -41,7 +46,27 @@ public class LoginScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
+        File tick = new File("src/main/resources/images/connectOK.png");
+        Image connectOK = new Image(tick.toURI().toString());
+        File cross = new File("src/main/resources/images/connectFAIL.png");
+        Image connectFAIL = new Image(cross.toURI().toString());
         
+        MySqlConnector connector = new MySqlConnector();
+        Connection connect = connector.openConnection();
+        {
+            if (connect != null)
+            {
+                connectionIndicatorPic.setImage(connectOK);
+                databaseOKText.setVisible(true);
+            }
+            else
+            {
+                connectionIndicatorPic.setImage(connectFAIL);
+                databaseOKText.setText(" Csatlakozási hiba!");
+                databaseOKText.setVisible(true);
+            }
+        }
+        connector.closeConnection();
     }    
 
     @FXML
@@ -128,26 +153,6 @@ public class LoginScreenController implements Initializable {
         scene.getStylesheets().add("/styles/Styles.css");
         stage.setScene(scene);
         stage.show();
-    }
-      @FXML
-    private void testConnectionButtonPressed(ActionEvent event) throws IOException, SQLException 
-    {
-        MySqlConnector connector= new MySqlConnector();
-        try(Connection connect = connector.openConnection()){
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Database inormation");
-            alert.setHeaderText(null);
-            alert.setContentText("Database connection successful!");
-            alert.showAndWait();
-        }
-        catch(Exception e){
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("Couldn't connect to remote database!");
-
-            alert.showAndWait(); 
-        }
-        connector.closeConnection();
     }
 }
 

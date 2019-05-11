@@ -8,8 +8,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="363.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.skipmaster.Controller.LoginScreenController">
+<AnchorPane id="AnchorPane" prefHeight="363.0" prefWidth="517.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hu.unideb.inf.skipmaster.Controller.LoginScreenController">
     <children>
         <Button fx:id="loginbutton" layoutX="230.0" layoutY="245.0" onAction="#loginButtonPressed" text="Belépés" />
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -29,17 +30,18 @@
             <Image url="@../images/logo.png" />
          </image>
       </ImageView>
-      <Label layoutX="79.0" layoutY="313.0" text="Nincs még fiókod?">
+      <Label layoutX="58.0" layoutY="314.0" text="Nincs még fiókod?">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="registernowbutton" layoutX="208.0" layoutY="312.0" mnemonicParsing="false" onAction="#registerNowButtonPressed" prefHeight="17.0" prefWidth="137.0" text="Regisztrálj egyet most!">
+      <Button fx:id="registernowbutton" layoutX="190.0" layoutY="313.0" mnemonicParsing="false" onAction="#registerNowButtonPressed" prefHeight="17.0" prefWidth="137.0" text="Regisztrálj egyet most!">
          <font>
             <Font size="10.0" />
          </font>
       </Button>
       <PasswordField fx:id="loginpwd" layoutX="184.0" layoutY="200.0" />
-      <Button fx:id="testConnectionButton" layoutX="370.0" layoutY="311.0" mnemonicParsing="false" onAction="#testConnectionButtonPressed" text="Test Connection" />
+      <ImageView fx:id="connectionIndicatorPic" fitHeight="32.0" fitWidth="32.0" layoutX="471.0" layoutY="308.0" pickOnBounds="true" preserveRatio="true" />
+      <Text fx:id="databaseOKText" layoutX="361.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adatbázis elérhető!" visible="false" />
     </children>
 </AnchorPane>
