@@ -45,7 +45,7 @@ import jdk.nashorn.internal.objects.NativeArray;
  * @author Adam
  */
 public class MainScreenController implements Initializable {
-
+    MySqlConnector connector= new MySqlConnector();
     @FXML
     private Label filenamelabel;
     @FXML
@@ -144,7 +144,6 @@ public class MainScreenController implements Initializable {
         {
             System.out.println("Hiba történt a fájl megynitása során!");
         }
-
         loadDataFromFile(timetable.getPath());
         loadTable(false);
         /*
@@ -181,7 +180,7 @@ public class MainScreenController implements Initializable {
         ResultSet rs;
         
         if(sync){
-            try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+            try (Connection connection = connector.openConnection()) {
                 Statement stmt=connection.createStatement();
                 if(remoteVersion > localVersion){
                     courses.clear();
@@ -234,6 +233,7 @@ public class MainScreenController implements Initializable {
                     stmt.executeUpdate("update user set version = '" + localVersion + "' where neptunID = '" + LoginScreenController.userLoggedIn + "';");
                 }
                 stmt.close();
+                connection.closeConnection();
             }catch(Exception e){
                 System.out.println(e);
             }
@@ -278,6 +278,7 @@ public class MainScreenController implements Initializable {
             String targynev;
             String[] buff;
             char type = 'E';
+
             while((line = br.readLine()) != null){
                     buff = line.split(";");
                     String[] tkod = buff[2].split("-");
@@ -321,7 +322,6 @@ public class MainScreenController implements Initializable {
         }        
     }
     
-     
     private void Skipped(String course, String course_type){
         for(Course c : courses){
             if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type)){
