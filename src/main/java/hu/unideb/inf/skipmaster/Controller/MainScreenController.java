@@ -106,9 +106,9 @@ public class MainScreenController implements Initializable {
                 Skipped(id,id2);
             }   
         });
+        courses.add(new Course(course.getText(), course_type.getText(), remainingSkips));
         fillTable(table, course, course_type, numberOfSkips, skipBtn);
 
-        numberOfCourses++;
         localVersion++;
         
         /* 
@@ -164,24 +164,24 @@ public class MainScreenController implements Initializable {
     }
     
     private void loadTable(boolean sync){
-        numberOfCourses=1;
+        numberOfCourses = 1;
         Label course;
         Label course_type;
         Label remainingSkips;
         Button skipBtn;
         int remSkips;
         ResultSet rs;
+        table.getChildren().clear();
         
         if(sync){
             try (Connection connection = connector.openConnection()) {
                 Statement stmt=connection.createStatement();
+                rs = stmt.executeQuery("select version from user where neptunID = '" + LoginScreenController.userLoggedIn + "';");
+                if(rs.next()){
+                    remoteVersion=rs.getInt("version");
+                }
                 if(remoteVersion > localVersion){
                     courses.clear();
-                    rs = stmt.executeQuery("select version from user where neptunID = '" + LoginScreenController.userLoggedIn + "';");
-                    if(rs.next()){
-                        localVersion=rs.getInt("version");
-                    }
-                    table.getChildren().clear();
                     rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
                     while(rs.next()){       
                         course = new Label(rs.getString("course"));
@@ -199,9 +199,9 @@ public class MainScreenController implements Initializable {
                             }
                         });
                         fillTable(table, course, course_type, remainingSkips, skipBtn);
+                        localVersion = remoteVersion;
                     }
                 }else if(localVersion > remoteVersion){
-                    table.getChildren().clear();
                     rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
                     if(rs.next()){
                         stmt.executeUpdate("delete from " + LoginScreenController.userLoggedIn + ";");
@@ -231,7 +231,6 @@ public class MainScreenController implements Initializable {
                 System.out.println(e);
             }
         }else{
-            table.getChildren().clear();  
             for(Course c : courses){
                 course = new Label(c.getCourse());
                 course_type = new Label(c.getCourse_type());
@@ -263,7 +262,7 @@ public class MainScreenController implements Initializable {
     }
     
      private void loadDataFromFile(String path){
-        localVersion = 1;
+        courses.clear();
         try{
             FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
@@ -310,6 +309,7 @@ public class MainScreenController implements Initializable {
                     }
             }
             br.close();
+            localVersion++;
         }catch(Exception e){
             System.out.println(e);
         }        
