@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -99,15 +98,13 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Text layoutX="71.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra neve:   " textAlignment="RIGHT" wrappingWidth="143.302734375" />
-                              <Text layoutX="69.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ideje:   " textAlignment="RIGHT" wrappingWidth="146.318359375" />
-                              <Text layoutX="70.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hátralévő hiányzásaid:   " textAlignment="RIGHT" wrappingWidth="145.919921875" />
-                              <TextField fx:id="lessonTextBox" layoutX="233.0" layoutY="71.0" />
-                              <ComboBox fx:id="dayComboBox" layoutX="232.0" layoutY="119.0" prefWidth="150.0" promptText="Nap" />
-                              <TextField fx:id="hourTextBox" layoutX="394.0" layoutY="119.0" prefHeight="25.0" prefWidth="56.0" promptText="Óra" />
+                              <Text layoutX="71.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra neve:" textAlignment="RIGHT" wrappingWidth="143.302734375" />
+                              <Text layoutX="69.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus Típusa:" textAlignment="RIGHT" wrappingWidth="146.318359375" />
+                              <Text layoutX="70.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hátralévő hiányzásaid:" textAlignment="RIGHT" wrappingWidth="145.919921875" />
+                              <TextField fx:id="lessonTextBox" layoutX="233.0" layoutY="71.0" maxWidth="150.0" />
+                              <TextField fx:id="courseTypeTextBox" layoutX="233.0" layoutY="119.0" prefHeight="25.0" prefWidth="150.0" />
                               <Button fx:id="registerlessonbutton" layoutX="219.0" layoutY="238.0" mnemonicParsing="false" onAction="#registerLesson" prefHeight="25.0" prefWidth="202.0" text="Óra hozzáadása" />
                               <TextField fx:id="skipsLeft" layoutX="233.0" layoutY="164.0" prefHeight="25.0" prefWidth="36.0" text="3" />
-                              <TextField fx:id="minTextBox" layoutX="456.0" layoutY="119.0" prefHeight="25.0" prefWidth="56.0" promptText="Perc" />
                            </children>
                         </AnchorPane>
                   </content>

@@ -30,6 +30,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -48,11 +49,7 @@ public class MainScreenController implements Initializable {
     @FXML
     private TextField lessonTextBox;
     @FXML
-    private ComboBox<String> dayComboBox;
-    @FXML
-    private TextField hourTextBox;
-    @FXML
-    private TextField minTextBox;
+    private TextField courseTypeTextBox;
     @FXML
     private TextField skipsLeft;
     @FXML
@@ -66,19 +63,50 @@ public class MainScreenController implements Initializable {
     
     File timetable; // ezt adja vissza a fájlmegnyitó alprogram
     
+    private int numberOfCourses;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        dayComboBox.getItems().addAll("Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek");
+        numberOfCourses=1; //1 mert a táblázat 2. sorától vannak a tényleges adatok ;)
         loadTable(false);
     }    
 
     @FXML
     private void registerLesson(ActionEvent event) 
     {
-        String lesson = lessonTextBox.getText(); //óra neve
-        String date = dayComboBox.getValue() +", " + hourTextBox.getText() + ":" + minTextBox.getText(); //óra ideje
-        int skipsleft = Integer.parseInt(skipsLeft.getText()); //hátralévő hiányzások száma
+        Label course = new Label(lessonTextBox.getText());
+        Label course_type = new Label(courseTypeTextBox.getText());
+        int remainingSkips = Integer.parseInt(skipsLeft.getText());
+        if(remainingSkips < 0)
+            remainingSkips = 0;
+        Label numberOfSkips = new Label(Integer.toString(remainingSkips));
+        
+        Button skipBtn = new Button("Skip");
+        final int id = numberOfCourses;
+        skipBtn.setOnMouseClicked(new EventHandler() {
+            @Override
+            public void handle(Event event) {
+                Skipped(id);
+                syncWithDB();
+            }   
+        });
+               
+        if(remainingSkips == 0){
+            course.setTextFill(Color.RED);
+            course_type.setTextFill(Color.RED);
+            numberOfSkips.setTextFill(Color.RED);
+            skipBtn.setTextFill(Color.RED);
+            skipBtn.setDisable(true);
+        }
+        table.add(skipBtn, 3, numberOfCourses);
+        table.add(course, 0, numberOfCourses);
+        table.add(course_type, 1, numberOfCourses);
+        table.add(numberOfSkips, 2, numberOfCourses);
+        GridPane.setMargin(course, new Insets(0,0,0,5));
+        GridPane.setMargin(course_type, new Insets(0,0,0,5));
+        GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
+        numberOfCourses++;
         
         /* 
             Itt kellene implementálni az új óra felvételét az adatbázisba
@@ -128,8 +156,8 @@ public class MainScreenController implements Initializable {
             Statement stmt=connection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
             stmt.close();
-            int i=1;
             if(sync){
+                numberOfCourses=1;
                 table.getChildren().clear();
             }     
             while(rs.next()){       
@@ -139,20 +167,9 @@ public class MainScreenController implements Initializable {
                 if(remainingSkips < 0)
                     remainingSkips = 0;
                 Label numberOfSkips = new Label(Integer.toString(remainingSkips));
-                table.add(course, 0, i);
-                table.add(course_type, 1, i);
-                table.add(numberOfSkips, 2, i);
-                GridPane.setMargin(course, new Insets(0,0,0,5));
-                GridPane.setMargin(course_type, new Insets(0,0,0,5));
-                GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
-                i++;
-            }
-            Button[] skipBtns = new Button[i-1];
-            for(int j = 1; j<i;j++){
-                skipBtns[j-1] = new Button("Skip");
-                skipBtns[j-1].setPrefHeight(15.0);
-                final int id = j;
-                skipBtns[j-1].setOnMouseClicked(new EventHandler() {
+                Button skipBtn = new Button("Skip");
+                final int id = numberOfCourses;
+                skipBtn.setOnMouseClicked(new EventHandler() {
                     @Override
                     public void handle(Event event) {
                         Skipped(id);
@@ -160,7 +177,22 @@ public class MainScreenController implements Initializable {
                     }
                     
                 });
-                table.add(skipBtns[j-1], 3, j);
+                
+                if(remainingSkips == 0){
+                    course.setTextFill(Color.RED);
+                    course_type.setTextFill(Color.RED);
+                    numberOfSkips.setTextFill(Color.RED);
+                    skipBtn.setTextFill(Color.RED);
+                    skipBtn.setDisable(true);
+                }
+                table.add(skipBtn, 3, numberOfCourses);
+                table.add(course, 0, numberOfCourses);
+                table.add(course_type, 1, numberOfCourses);
+                table.add(numberOfSkips, 2, numberOfCourses);
+                GridPane.setMargin(course, new Insets(0,0,0,5));
+                GridPane.setMargin(course_type, new Insets(0,0,0,5));
+                GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
+                numberOfCourses++;
             }
         }catch(Exception e){
             System.out.println(e);
