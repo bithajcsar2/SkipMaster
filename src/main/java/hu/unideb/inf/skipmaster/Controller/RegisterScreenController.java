@@ -35,6 +35,7 @@ public class RegisterScreenController implements Initializable {
     @FXML
     private void registerButtonPressed(ActionEvent event)
     {
+        registerneptun.setText(registerneptun.getText().toUpperCase());
         //regisztrációs ablak Regisztráció gombjának lenyomása
         if(registerneptun.getText().isEmpty() || registerpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
@@ -54,7 +55,7 @@ public class RegisterScreenController implements Initializable {
                        System.out.println("Ez a neptun-kód már regisztrálva van.");
                     }else{
                         stmt.executeQuery("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
-                        stmt.executeQuery("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
+                        stmt.executeQuery("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), remainingSkips int default 3, primary key(id));");
                         System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
                     }
                     connection.close();
