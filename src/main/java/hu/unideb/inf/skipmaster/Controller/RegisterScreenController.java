@@ -48,13 +48,21 @@ public class RegisterScreenController implements Initializable {
         //regisztrációs ablak Regisztráció gombjának lenyomása
         if(registerneptun.getText().isEmpty() || registerpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Database inormation");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Információ");
             alert.setHeaderText(null);
-            alert.setContentText("A neptun-kód/jelszó mező nem lehet üres.");
+            alert.setContentText("A NEPTUN-kód/jelszó mező nem lehet üres!");
             alert.showAndWait();
         }else{
-            try{
+            if (registerneptun.getText().length() != 6)
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Információ");
+                alert.setHeaderText(null);
+                alert.setContentText("A NEPTUN-kódnak pontosan 6 karakterből kell állnia!");
+                alert.showAndWait();
+            } 
+            else try{
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 byte[] buffer = md.digest(registerpwd.getText().getBytes());
                 BigInteger no = new BigInteger(1, buffer); 
@@ -67,17 +75,22 @@ public class RegisterScreenController implements Initializable {
                     Statement stmt=connection.createStatement();
                     ResultSet rs=stmt.executeQuery("select neptunID from user where neptunID = '" + registerneptun.getText() + "';");
                     if(rs.next()){
-                       System.out.println("Ez a neptun-kód már regisztrálva van.");
+                       System.out.println("Ez a NEPTUN-kód már regisztrálva van!");
+                       Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                       alert.setTitle("Adatbázis információ");
+                       alert.setHeaderText(null);
+                       alert.setContentText("Ez a NEPTUN-kód már regisztrálva van!");
+                       alert.showAndWait();
                     }else{
                         stmt.executeUpdate("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
                         stmt.executeUpdate("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), remainingSkips int default 3, primary key(id));");
                         Stage stage = (Stage) registerButton.getScene().getWindow();
                         stage.close();
-                        System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
+                        System.out.println("Sikeres regisztráció, most már bejelentkezhetsz!");
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Database inormation");
+                        alert.setTitle("Sikeres regisztráció");
                         alert.setHeaderText(null);
-                        alert.setContentText("Sikeres regisztráció, mostmár bejelentkezhetsz!");
+                        alert.setContentText("Sikeres regisztráció, most már bejelentkezhetsz!");
                         alert.showAndWait();
                     }
                     /*connection.close();*/

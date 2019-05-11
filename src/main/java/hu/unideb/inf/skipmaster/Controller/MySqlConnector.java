@@ -27,8 +27,8 @@ public class MySqlConnector {
        {
              System.out.println(e);
              Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("Couldn't connect to remote database!");
+            alert.setTitle("Csatlakozási hiba");
+            alert.setContentText("Nem sikerült csatlakozni a távoli adatbázishoz!");
 
             alert.showAndWait(); 
 

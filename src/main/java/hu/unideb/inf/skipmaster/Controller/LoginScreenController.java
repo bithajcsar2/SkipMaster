@@ -84,9 +84,9 @@ public class LoginScreenController implements Initializable {
         
         if(loginneptun.getText().isEmpty() || loginpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
-             Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setContentText("A neptun-kód/jelszó mező nem lehet üres.");
+             Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Információ");
+            alert.setContentText("A NEPTUN-kód/jelszó mező nem lehet üres!");
 
             alert.showAndWait(); //Ez mehet majd a GUI-ra
         }else{
@@ -105,9 +105,8 @@ public class LoginScreenController implements Initializable {
                    if(!(rs.getString(1).equals(hashedPwd))){
                         System.out.println("Hibás jelszó"); //Ez mehet majd a GUI-ra
                         Alert alert = new Alert(AlertType.ERROR);
-                        alert.setTitle("Error Dialog");
+                        alert.setTitle("Nem sikerült bejelentkezni");
                         alert.setContentText("Hibás jelszó!");
-
                         alert.showAndWait(); //Ez mehet majd a GUI-ra
                   }else{
                     System.out.println("Bejelentkezve");
@@ -117,8 +116,8 @@ public class LoginScreenController implements Initializable {
                 }else{
                     System.out.println("Hibás neptunID/Nincs regisztrálva");
                      Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("Error Dialog");
-                    alert.setContentText("Hibás neptunID/Nincs regisztrálva");
+                    alert.setTitle("Nem sikerült bejelentkezni");
+                    alert.setContentText("Nincs regisztrálva ilyen neptunID!");
 
                     alert.showAndWait(); //Ez mehet majd a GUI-ra
                 }

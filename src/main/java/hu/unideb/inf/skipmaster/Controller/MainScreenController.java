@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -135,6 +136,11 @@ public class MainScreenController implements Initializable {
     {
         if (timetable == null)
         {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Fájlkezelési hiba");
+            alert.setHeaderText(null);
+            alert.setContentText("Hiba történt a fájl megynitása során!");
+            alert.showAndWait();
             System.out.println("Hiba történt a fájl megynitása során!");
         }
         loadDataFromFile(timetable.getPath());
