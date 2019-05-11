@@ -233,7 +233,7 @@ public class MainScreenController implements Initializable {
                     stmt.executeUpdate("update user set version = '" + localVersion + "' where neptunID = '" + LoginScreenController.userLoggedIn + "';");
                 }
                 stmt.close();
-                connection.closeConnection();
+                connector.closeConnection();
             }catch(Exception e){
                 System.out.println(e);
             }
