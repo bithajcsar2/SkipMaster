@@ -24,62 +24,71 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="424.0" prefWidth="640.0">
                            <children>
-                              <Button fx:id="syncData" layoutX="273.0" layoutY="406.0" mnemonicParsing="false" onAction="#syncWithDB" text="Szinkronizálás" />
-                              <Text layoutX="65.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus" textAlignment="CENTER" wrappingWidth="161.13671875">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="318.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus Típusa" textAlignment="CENTER" wrappingWidth="156.716796875">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="485.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Meglévő hiányzásaid" textAlignment="CENTER" wrappingWidth="162.466796875">
-                                 <font>
-                                    <Font size="13.0" />
-                                 </font>
-                              </Text>
-                              <GridPane fx:id="table1" gridLinesVisible="true" layoutY="26.0" prefHeight="287.0" prefWidth="640.0">
+                              <Button fx:id="syncData" layoutX="275.0" layoutY="405.0" mnemonicParsing="false" onAction="#syncWithDB" text="Szinkronizálás" />
+                              <GridPane gridLinesVisible="true" prefHeight="350.0" prefWidth="640.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="335.0" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="10.0" prefWidth="188.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="156.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Meglévő hiányzásaid" textAlignment="CENTER" wrappingWidth="162.466796875" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus" textAlignment="CENTER" wrappingWidth="161.13671875" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus Típusa" textAlignment="CENTER" wrappingWidth="156.716796875" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <font>
+                                          <Font size="13.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField alignment="CENTER" editable="false" text="Skip?" GridPane.columnIndex="3" />
+                                 </children>
                               </GridPane>
-                              <GridPane fx:id="table" layoutY="26.0" prefHeight="287.0" prefWidth="640.0">
+                              <GridPane fx:id="table" prefHeight="350.0" prefWidth="640.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="335.0" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="210.0" minWidth="10.0" prefWidth="188.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="156.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="250.0" minWidth="10.0" prefWidth="250.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="CENTER" maxWidth="125.0" minWidth="10.0" prefWidth="125.0" />
+                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="193.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="209.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                  <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                  <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+                                    <RowConstraints maxHeight="30.0" minHeight="25.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
                                 </rowConstraints>
                               </GridPane>
                            </children>

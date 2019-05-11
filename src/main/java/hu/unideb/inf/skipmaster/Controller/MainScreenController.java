@@ -17,12 +17,15 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -122,7 +125,8 @@ public class MainScreenController implements Initializable {
         try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
             Statement stmt=connection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
-            int i=0;
+            stmt.close();
+            int i=1;
             if(sync){
                 table.getChildren().clear();
             }     
@@ -141,14 +145,28 @@ public class MainScreenController implements Initializable {
                 GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
                 i++;
             }
-            stmt.close();
+            Button[] skipBtns = new Button[i-1];
+            for(int j = 1; j<i;j++){
+                skipBtns[j-1] = new Button("Skip");
+                skipBtns[j-1].setPrefHeight(15.0);
+                final int id = j;
+                skipBtns[j-1].setOnMouseClicked(new EventHandler() {
+                    @Override
+                    public void handle(Event event) {
+                        Skipped(id);
+                        syncWithDB();
+                    }
+                    
+                });
+                table.add(skipBtns[j-1], 3, j);
+            }
         }catch(Exception e){
             System.out.println(e);
         }
     }
     
     @FXML
-    private void syncWithDB (ActionEvent event) 
+    private void syncWithDB () 
     {
         /*
             Szinkronizálás gomb nyomására hívódik meg. Lekérdezi az adatokat, és megjeleníti az UI-on. 
@@ -214,14 +232,13 @@ public class MainScreenController implements Initializable {
         }        
     }
     
-     /*
-    private void Skipped(){
+     
+    private void Skipped(int id){
         try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
             Statement stmt=connection.createStatement();
-            stmt.executeQuery("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where course = '" + selectedCourse + "' and course_type = '" + selectedCourseType + "';");
+            stmt.executeQuery("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where id ="+  id + ";");
         }catch(Exception e){
             System.out.println(e);
         }
     }
-    */
 }
