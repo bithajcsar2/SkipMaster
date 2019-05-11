@@ -40,7 +40,7 @@ import javafx.stage.Stage;
  * @author Adam
  */
 public class MainScreenController implements Initializable {
-
+    MySqlConnector connector= new MySqlConnector();
     @FXML
     private Label filenamelabel;
     @FXML
@@ -106,7 +106,8 @@ public class MainScreenController implements Initializable {
         {
             System.out.println("Hiba történt a fájl megynitása során!");
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
+        try (Connection connection = connector.openConnection()){
             Statement stmt=connection.createStatement();
             loadDataFromFile(timetable.getPath(), stmt);
             stmt.close();
@@ -122,7 +123,8 @@ public class MainScreenController implements Initializable {
     
     private void loadTable(boolean sync){
         
-        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
+         try (Connection connection = connector.openConnection()){
             Statement stmt=connection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
             stmt.close();
@@ -234,8 +236,9 @@ public class MainScreenController implements Initializable {
     
      
     private void Skipped(int id){
-        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
-            Statement stmt=connection.createStatement();
+        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
+         try (Connection connection = connector.openConnection()){
+             Statement stmt=connection.createStatement();
             stmt.executeQuery("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where id ="+  id + ";");
         }catch(Exception e){
             System.out.println(e);

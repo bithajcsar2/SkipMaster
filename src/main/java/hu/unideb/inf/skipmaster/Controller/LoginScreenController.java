@@ -15,6 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -29,9 +31,13 @@ public class LoginScreenController implements Initializable {
     private PasswordField loginpwd; //bejelentkezési ablak jelszó mezője
     @FXML
     private Button loginbutton;
+    @FXML
+    private Button testConnectionButton;
+    
     
     public static String userLoggedIn; //A bejelentkezett user felhasználóneve
- 
+    
+            
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -42,6 +48,8 @@ public class LoginScreenController implements Initializable {
     @FXML
     private void loginButtonPressed(ActionEvent event) throws IOException
     {
+     
+        MySqlConnector connector= new MySqlConnector();
         //bejelentkezési ablak Belépés gombjának lenyomása
         /*
             Itt kéne megcsinálni az adabázisból a lekérdezést
@@ -52,7 +60,8 @@ public class LoginScreenController implements Initializable {
         if(loginneptun.getText().isEmpty() || loginpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
         }else{
-            try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+            /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
+            try (Connection connection = connector.openConnection()){
                 Statement stmt=connection.createStatement();
                 ResultSet rs=stmt.executeQuery("select passwd from user where neptunID = '" + loginneptun.getText() + "';");
                 if(rs.next()){
@@ -73,7 +82,8 @@ public class LoginScreenController implements Initializable {
                 }else{
                     System.out.println("Hibás neptunID/Nincs regisztrálva"); //Ez mehet majd a GUI-ra
                 }
-                connection.close();
+                /*connection.close();*/
+                connector.closeConnection();
            }catch(Exception e){
                System.out.println(e);
            }
@@ -104,4 +114,25 @@ public class LoginScreenController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+      @FXML
+    private void testConnectionButtonPressed(ActionEvent event) throws IOException, SQLException 
+    {
+        MySqlConnector connector= new MySqlConnector();
+        try(Connection connect = connector.openConnection()){
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Database inormation");
+            alert.setHeaderText(null);
+            alert.setContentText("Database connection successful!");
+            alert.showAndWait();
+        }
+        catch(Exception e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("Couldn't connect to remote database!");
+
+            alert.showAndWait(); 
+        }
+        connector.closeConnection();
+    }
 }
+
