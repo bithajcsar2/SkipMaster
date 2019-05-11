@@ -59,6 +59,11 @@ public class LoginScreenController implements Initializable {
         
         if(loginneptun.getText().isEmpty() || loginpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");
+             Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("A neptun-kód/jelszó mező nem lehet üres.");
+
+            alert.showAndWait(); //Ez mehet majd a GUI-ra
         }else{
             /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
             try (Connection connection = connector.openConnection()){
@@ -74,13 +79,23 @@ public class LoginScreenController implements Initializable {
                    }
                    if(!(rs.getString(1).equals(hashedPwd))){
                         System.out.println("Hibás jelszó"); //Ez mehet majd a GUI-ra
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error Dialog");
+                        alert.setContentText("Hibás jelszó!");
+
+                        alert.showAndWait(); //Ez mehet majd a GUI-ra
                   }else{
                     System.out.println("Bejelentkezve");
                     userLoggedIn = loginneptun.getText();
                    successful_login = true;
                   }
                 }else{
-                    System.out.println("Hibás neptunID/Nincs regisztrálva"); //Ez mehet majd a GUI-ra
+                    System.out.println("Hibás neptunID/Nincs regisztrálva");
+                     Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setContentText("Hibás neptunID/Nincs regisztrálva");
+
+                    alert.showAndWait(); //Ez mehet majd a GUI-ra
                 }
                 /*connection.close();*/
                 connector.closeConnection();
