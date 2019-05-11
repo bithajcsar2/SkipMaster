@@ -220,8 +220,8 @@ public class MainScreenController implements Initializable {
             char type = 'E';
             ResultSet rs = st.executeQuery("select * from " + LoginScreenController.userLoggedIn);
             if(rs.next()){
-                st.executeQuery("drop table if exists " + LoginScreenController.userLoggedIn);
-                st.executeQuery("create table if not exists " + LoginScreenController.userLoggedIn + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
+                st.executeUpdate("drop table if exists " + LoginScreenController.userLoggedIn);
+                st.executeUpdate("create table if not exists " + LoginScreenController.userLoggedIn + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
             }
             while((line = br.readLine()) != null){
                     buff = line.split(";");
@@ -248,15 +248,15 @@ public class MainScreenController implements Initializable {
                     switch(type){
                         case 'E':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeQuery("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'előadás');");
+                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'előadás');");
                             break;
                         case 'G':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeQuery("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'gyakorlat');");
+                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'gyakorlat');");
                             break;
                         case 'L':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeQuery("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'labor');");
+                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'labor');");
                             break;
                     }
             }
@@ -271,7 +271,7 @@ public class MainScreenController implements Initializable {
         /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
          try (Connection connection = connector.openConnection()){
              Statement stmt=connection.createStatement();
-            stmt.executeQuery("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where id ="+  id + ";");
+            stmt.executeUpdate("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where id ="+  id + ";");
         }catch(Exception e){
             System.out.println(e);
         }
