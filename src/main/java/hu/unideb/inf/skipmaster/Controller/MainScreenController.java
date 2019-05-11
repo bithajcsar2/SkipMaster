@@ -171,7 +171,7 @@ public class MainScreenController implements Initializable {
         Button skipBtn;
         int remSkips;
         ResultSet rs;
-        table.getChildren().clear();
+        
         
         if(sync){
             try (Connection connection = connector.openConnection()) {
@@ -181,6 +181,7 @@ public class MainScreenController implements Initializable {
                     remoteVersion=rs.getInt("version");
                 }
                 if(remoteVersion > localVersion){
+                    table.getChildren().clear();
                     courses.clear();
                     rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
                     while(rs.next()){       
@@ -202,6 +203,7 @@ public class MainScreenController implements Initializable {
                         localVersion = remoteVersion;
                     }
                 }else if(localVersion > remoteVersion){
+                    table.getChildren().clear();
                     rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
                     if(rs.next()){
                         stmt.executeUpdate("delete from " + LoginScreenController.userLoggedIn + ";");
@@ -231,6 +233,7 @@ public class MainScreenController implements Initializable {
                 System.out.println(e);
             }
         }else{
+            table.getChildren().clear();
             for(Course c : courses){
                 course = new Label(c.getCourse());
                 course_type = new Label(c.getCourse_type());
