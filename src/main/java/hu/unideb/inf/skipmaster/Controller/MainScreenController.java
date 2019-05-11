@@ -28,6 +28,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -167,6 +169,16 @@ public class MainScreenController implements Initializable {
             remainingSkips.setTextFill(Color.RED);
             skipBtn.setTextFill(Color.RED);
             skipBtn.setDisable(true);
+            File cross = new File("src/main/resources/images/hideThePain.png");
+            Image hideThePain = new Image(cross.toURI().toString());
+            ImageView imageView = new ImageView(hideThePain);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setGraphic(imageView);
+            alert.setTitle("Oh shit waddup!");
+            alert.setHeaderText(null);
+            alert.setContentText("Mostmár be kell járnod órára te lusta iskolakerülő!");
+            alert.showAndWait();
+            
         }
         table.add(skipBtn, 3, numberOfCourses);
         table.add(course, 0, numberOfCourses);
