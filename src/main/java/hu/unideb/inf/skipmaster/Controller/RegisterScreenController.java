@@ -67,7 +67,7 @@ public class RegisterScreenController implements Initializable {
                        System.out.println("Ez a neptun-kód már regisztrálva van.");
                     }else{
                         stmt.executeUpdate("insert into user(neptunID, passwd) values('" + registerneptun.getText() + "', '" + hashedPwd + "');");
-                        stmt.executeUpdate("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
+                        stmt.executeUpdate("create table if not exists " + registerneptun.getText() + " (id int auto_increment, course varchar(100),course_type varchar(20), remainingSkips int default 3, primary key(id));");
                         System.out.println("Sikeres regisztráció, mostmár bejelentkezhetsz!");
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Database inormation");

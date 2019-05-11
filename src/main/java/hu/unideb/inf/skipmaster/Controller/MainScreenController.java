@@ -76,7 +76,7 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+        try (Connection connection = connector.openConnection()) {
             Statement stmt=connection.createStatement();
             ResultSet rs = stmt.executeQuery("select version from user where neptunID = '" + LoginScreenController.userLoggedIn + "';");
             if(rs.next()){
@@ -91,7 +91,7 @@ public class MainScreenController implements Initializable {
         if(remoteVersion > 0){
             syncWithDB();
         }
-        
+        connector.closeConnection();
     }    
 
     @FXML
