@@ -41,6 +41,7 @@ public class RegisterScreenController implements Initializable {
     @FXML
     private void registerButtonPressed(ActionEvent event)
     {
+        registerneptun.setText(registerneptun.getText().toUpperCase());
         //regisztrációs ablak Regisztráció gombjának lenyomása
         if(registerneptun.getText().isEmpty() || registerpwd.getText().isEmpty()){
             System.out.println("A neptun-kód/jelszó mező nem lehet üres.");

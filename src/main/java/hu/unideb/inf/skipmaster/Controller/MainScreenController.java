@@ -7,6 +7,7 @@ package hu.unideb.inf.skipmaster.Controller;
  */
 
 
+import hu.unideb.inf.skipmaster.Course;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -15,6 +16,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -34,6 +37,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jdk.nashorn.internal.objects.NativeArray;
 
 /**
  * FXML Controller class
@@ -64,12 +68,30 @@ public class MainScreenController implements Initializable {
     File timetable; // ezt adja vissza a fájlmegnyitó alprogram
     
     private int numberOfCourses;
+    private int localVersion; //fájlból
+    private int remoteVersion;
+    
+    private List<Course> courses = new ArrayList<>();
     
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
+        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+            Statement stmt=connection.createStatement();
+            ResultSet rs = stmt.executeQuery("select version from user where neptunID = '" + LoginScreenController.userLoggedIn + "';");
+            if(rs.next()){
+                remoteVersion = rs.getInt("version");
+            }
+            stmt.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
         numberOfCourses=1; //1 mert a táblázat 2. sorától vannak a tényleges adatok ;)
-        loadTable(false);
+        if(remoteVersion > 0){
+            syncWithDB();
+        }
+        
     }    
 
     @FXML
@@ -83,30 +105,18 @@ public class MainScreenController implements Initializable {
         Label numberOfSkips = new Label(Integer.toString(remainingSkips));
         
         Button skipBtn = new Button("Skip");
-        final int id = numberOfCourses;
+        final String id = course.getText();
+        final String id2 = course_type.getText();
         skipBtn.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
-                Skipped(id);
-                syncWithDB();
+                Skipped(id,id2);
             }   
         });
-               
-        if(remainingSkips == 0){
-            course.setTextFill(Color.RED);
-            course_type.setTextFill(Color.RED);
-            numberOfSkips.setTextFill(Color.RED);
-            skipBtn.setTextFill(Color.RED);
-            skipBtn.setDisable(true);
-        }
-        table.add(skipBtn, 3, numberOfCourses);
-        table.add(course, 0, numberOfCourses);
-        table.add(course_type, 1, numberOfCourses);
-        table.add(numberOfSkips, 2, numberOfCourses);
-        GridPane.setMargin(course, new Insets(0,0,0,5));
-        GridPane.setMargin(course_type, new Insets(0,0,0,5));
-        GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
+        fillTable(table, course, course_type, numberOfSkips, skipBtn);
+
         numberOfCourses++;
+        localVersion++;
         
         /* 
             Itt kellene implementálni az új óra felvételét az adatbázisba
@@ -134,68 +144,117 @@ public class MainScreenController implements Initializable {
         {
             System.out.println("Hiba történt a fájl megynitása során!");
         }
-        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
-        try (Connection connection = connector.openConnection()){
-            Statement stmt=connection.createStatement();
-            loadDataFromFile(timetable.getPath(), stmt);
-            stmt.close();
-            loadTable(true);
-        }catch(Exception e){
-            System.out.println(e);
-        }
+        loadDataFromFile(timetable.getPath());
+        loadTable(false);
         /*
             Ide kellene implementálni a fájlból importálást
             A fájlra a 'timetable' változóval tudsz hivatkozni
         */
     }
     
+    private void fillTable(GridPane table, Label course, Label course_type, Label remainingSkips, Button skipBtn){
+        if(Integer.parseInt(remainingSkips.getText()) == 0){
+            course.setTextFill(Color.RED);
+            course_type.setTextFill(Color.RED);
+            remainingSkips.setTextFill(Color.RED);
+            skipBtn.setTextFill(Color.RED);
+            skipBtn.setDisable(true);
+        }
+        table.add(skipBtn, 3, numberOfCourses);
+        table.add(course, 0, numberOfCourses);
+        table.add(course_type, 1, numberOfCourses);
+        table.add(remainingSkips, 2, numberOfCourses);
+        GridPane.setMargin(course, new Insets(0,0,0,5));
+        GridPane.setMargin(course_type, new Insets(0,0,0,5));
+        GridPane.setMargin(remainingSkips, new Insets(0,0,0,5));
+        numberOfCourses++;
+    }
+    
     private void loadTable(boolean sync){
+        numberOfCourses=1;
+        Label course;
+        Label course_type;
+        Label remainingSkips;
+        Button skipBtn;
+        int remSkips;
+        ResultSet rs;
         
-        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
-         try (Connection connection = connector.openConnection()){
-            Statement stmt=connection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
-            stmt.close();
-            if(sync){
-                numberOfCourses=1;
-                table.getChildren().clear();
-            }     
-            while(rs.next()){       
-                Label course = new Label(rs.getString("course"));
-                Label course_type = new Label(rs.getString("course_type"));
-                int remainingSkips = 3 - rs.getInt("numberOfSkips");
-                if(remainingSkips < 0)
-                    remainingSkips = 0;
-                Label numberOfSkips = new Label(Integer.toString(remainingSkips));
-                Button skipBtn = new Button("Skip");
-                final int id = numberOfCourses;
+        if(sync){
+            try (Connection connection = connector.openConnection()) {
+                Statement stmt=connection.createStatement();
+                if(remoteVersion > localVersion){
+                    courses.clear();
+                    rs = stmt.executeQuery("select version from user where neptunID = '" + LoginScreenController.userLoggedIn + "';");
+                    if(rs.next()){
+                        localVersion=rs.getInt("version");
+                    }
+                    table.getChildren().clear();
+                    rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
+                    while(rs.next()){       
+                        course = new Label(rs.getString("course"));
+                        course_type = new Label(rs.getString("course_type"));
+                        remSkips = rs.getInt("remainingSkips");
+                        remainingSkips = new Label(Integer.toString(remSkips));
+                        courses.add(new Course(course.getText(), course_type.getText(), remSkips));
+                        skipBtn = new Button("Skip");
+                        final String id = course.getText();
+                        final String id2 = course_type.getText();
+                        skipBtn.setOnMouseClicked(new EventHandler() {
+                            @Override
+                            public void handle(Event event) {
+                                Skipped(id,id2);
+                            }
+                        });
+                        fillTable(table, course, course_type, remainingSkips, skipBtn);
+                    }
+                }else if(localVersion > remoteVersion){
+                    table.getChildren().clear();
+                    rs = stmt.executeQuery("select * from " + LoginScreenController.userLoggedIn + ";");
+                    if(rs.next()){
+                        stmt.executeUpdate("delete from " + LoginScreenController.userLoggedIn + ";");
+                    }
+                    for(Course c : courses){
+                        course = new Label(c.getCourse());
+                        course_type = new Label(c.getCourse_type());
+                        remSkips = c.getNumberOfSkips();
+                        remainingSkips = new Label(Integer.toString(remSkips));
+                        skipBtn = new Button("Skip");
+                        final String id = course.getText();
+                        final String id2 = course_type.getText();
+                        skipBtn.setOnMouseClicked(new EventHandler() {
+                            @Override
+                            public void handle(Event event) {
+                                Skipped(id,id2);
+                            }
+                        });
+                        fillTable(table, course, course_type, remainingSkips, skipBtn);
+                        stmt.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type, remainingSkips) values('" + c.getCourse() + "', '" + c.getCourse_type() + "'," + c.getNumberOfSkips() + ");");
+                    }
+                    stmt.executeUpdate("update user set version = '" + localVersion + "' where neptunID = '" + LoginScreenController.userLoggedIn + "';");
+                }
+                stmt.close();
+                connection.closeConnection();
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }else{
+            table.getChildren().clear();  
+            for(Course c : courses){
+                course = new Label(c.getCourse());
+                course_type = new Label(c.getCourse_type());
+                remSkips = c.getNumberOfSkips();
+                remainingSkips = new Label(Integer.toString(remSkips));
+                skipBtn = new Button("Skip");
+                final String id = course.getText();
+                final String id2 = course_type.getText();
                 skipBtn.setOnMouseClicked(new EventHandler() {
                     @Override
                     public void handle(Event event) {
-                        Skipped(id);
-                        syncWithDB();
+                        Skipped(id,id2);
                     }
-                    
                 });
-                
-                if(remainingSkips == 0){
-                    course.setTextFill(Color.RED);
-                    course_type.setTextFill(Color.RED);
-                    numberOfSkips.setTextFill(Color.RED);
-                    skipBtn.setTextFill(Color.RED);
-                    skipBtn.setDisable(true);
-                }
-                table.add(skipBtn, 3, numberOfCourses);
-                table.add(course, 0, numberOfCourses);
-                table.add(course_type, 1, numberOfCourses);
-                table.add(numberOfSkips, 2, numberOfCourses);
-                GridPane.setMargin(course, new Insets(0,0,0,5));
-                GridPane.setMargin(course_type, new Insets(0,0,0,5));
-                GridPane.setMargin(numberOfSkips, new Insets(0,0,0,5));
-                numberOfCourses++;
+                fillTable(table, course, course_type, remainingSkips, skipBtn);
             }
-        }catch(Exception e){
-            System.out.println(e);
         }
     }
     
@@ -210,7 +269,8 @@ public class MainScreenController implements Initializable {
         
     }
     
-     private void loadDataFromFile(String path, Statement st){
+     private void loadDataFromFile(String path){
+        localVersion = 1;
         try{
             FileReader fr = new FileReader(path);
             BufferedReader br = new BufferedReader(fr);
@@ -218,11 +278,7 @@ public class MainScreenController implements Initializable {
             String targynev;
             String[] buff;
             char type = 'E';
-            ResultSet rs = st.executeQuery("select * from " + LoginScreenController.userLoggedIn);
-            if(rs.next()){
-                st.executeUpdate("drop table if exists " + LoginScreenController.userLoggedIn);
-                st.executeUpdate("create table if not exists " + LoginScreenController.userLoggedIn + " (id int auto_increment, course varchar(100),course_type varchar(20), numberOfSkips int default 0, primary key(id));");
-            }
+
             while((line = br.readLine()) != null){
                     buff = line.split(";");
                     String[] tkod = buff[2].split("-");
@@ -248,15 +304,15 @@ public class MainScreenController implements Initializable {
                     switch(type){
                         case 'E':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'előadás');");
+                            courses.add(new Course(targynev, "előadás", 3));
                             break;
                         case 'G':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'gyakorlat');");
+                            courses.add(new Course(targynev, "gyakorlat", 3));
                             break;
                         case 'L':
                             targynev = String.copyValueOf(charbuff);
-                            st.executeUpdate("insert into " +  LoginScreenController.userLoggedIn + "(course, course_type) values('" + targynev + "', 'labor');");
+                            courses.add(new Course(targynev, "labor", 3));
                             break;
                     }
             }
@@ -266,14 +322,13 @@ public class MainScreenController implements Initializable {
         }        
     }
     
-     
-    private void Skipped(int id){
-        /*try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {*/
-         try (Connection connection = connector.openConnection()){
-             Statement stmt=connection.createStatement();
-            stmt.executeUpdate("update " + LoginScreenController.userLoggedIn + " set numberOfSkips = numberOfSkips+1 where id ="+  id + ";");
-        }catch(Exception e){
-            System.out.println(e);
+    private void Skipped(String course, String course_type){
+        for(Course c : courses){
+            if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type)){
+                c.setNumberOfSkips(c.getNumberOfSkips()-1);
+            }
         }
+        localVersion++;
+        loadTable(false);
     }
 }

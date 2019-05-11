@@ -41,13 +41,19 @@ public class LoginScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
-        // TODO
-        
+        try (Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost/SkipMaster?characterEncoding=UTF-8&user=root&password=asd123")) {
+            Statement stmt=connection.createStatement();
+            stmt.executeQuery("create table if not exists user(id int not null auto_increment, neptunID varchar(6) not null, passwd varchar(100) not null, version int default 0, primary key(id));");   
+            stmt.close();
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }    
 
     @FXML
     private void loginButtonPressed(ActionEvent event) throws IOException
     {
+        //loginneptun.setText(loginneptun.getText().toUpperCase());
      
         MySqlConnector connector= new MySqlConnector();
         //bejelentkezési ablak Belépés gombjának lenyomása
