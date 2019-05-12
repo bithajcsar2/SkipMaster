@@ -134,6 +134,9 @@ public class MainScreenController implements Initializable {
 
         localVersion++;
         syncDoneText.setVisible(false);
+        lessonTextBox.clear();
+        courseTypeTextBox.clear();
+        skipsLeft.setText("3");
         }
         else
         {
