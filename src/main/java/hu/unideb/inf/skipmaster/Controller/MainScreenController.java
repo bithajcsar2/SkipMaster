@@ -441,6 +441,7 @@ public class MainScreenController implements Initializable {
         localVersion++;
         loadTable(false);
         refreshCourseListForComboBox();
+        syncDoneText.setVisible(false);
         ////////////
     }
     
