@@ -430,8 +430,6 @@ public class MainScreenController implements Initializable {
         }
         localVersion++;
         refreshCourseListForComboBox();
-        /////////////
-        syncWithDB(); //itt kellene szinkronizálni
         ////////////
     }
     
