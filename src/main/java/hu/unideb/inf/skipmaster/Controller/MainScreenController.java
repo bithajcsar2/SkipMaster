@@ -429,6 +429,7 @@ public class MainScreenController implements Initializable {
             alert.showAndWait();
         }
         localVersion++;
+        loadTable(false);
         refreshCourseListForComboBox();
         ////////////
     }
