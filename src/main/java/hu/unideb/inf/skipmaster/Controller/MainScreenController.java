@@ -114,6 +114,7 @@ public class MainScreenController implements Initializable {
         Button addBtn = new Button("Add");
         final String id = course.getText();
         final String id2 = course_type.getText();
+        if(!id.isEmpty()&&!id2.isEmpty()){
         skipBtn.setOnMouseClicked(new EventHandler() {
             @Override
             public void handle(Event event) {
@@ -133,6 +134,15 @@ public class MainScreenController implements Initializable {
 
         localVersion++;
         syncDoneText.setVisible(false);
+        }
+        else
+        {
+             Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Eror");
+            alert.setHeaderText(null);
+            alert.setContentText("Az óra neve és/vagy típusa nem lehet üres!");
+            alert.showAndWait();
+        }
       
     }
 
