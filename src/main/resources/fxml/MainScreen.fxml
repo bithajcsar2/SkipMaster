@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -13,6 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -26,7 +28,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="424.0" prefWidth="640.0">
                            <children>
-                              <Button fx:id="syncData" layoutX="453.0" layoutY="14.0" mnemonicParsing="false" onAction="#syncWithDB" text="Szinkronizálás az adatbázissal" />
+                              <Button fx:id="syncData" layoutX="451.0" layoutY="18.0" mnemonicParsing="false" onAction="#syncWithDB" text="Szinkronizálás az adatbázissal" />
                               <ScrollPane layoutY="85.0" prefHeight="393.0" prefWidth="648.0">
                                  <content>
                                     <GridPane fx:id="table" prefHeight="50.0" prefWidth="645.0">
@@ -85,21 +87,45 @@
                                     <Font name="Calibri" size="25.0" />
                                  </font>
                               </Text>
+                              <Text fx:id="syncDoneText" fill="#0b7209" layoutX="265.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Szinkronizálva!" textAlignment="RIGHT" wrappingWidth="177.064453125" />
                            </children>
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Óra hozzáadása">
+                <Tab text="Óra hozzáadása/törlése">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Text layoutX="71.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra neve:" textAlignment="RIGHT" wrappingWidth="143.302734375" />
-                              <Text layoutX="69.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus Típusa:" textAlignment="RIGHT" wrappingWidth="146.318359375" />
-                              <Text layoutX="70.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hátralévő hiányzásaid:" textAlignment="RIGHT" wrappingWidth="145.919921875" />
-                              <TextField fx:id="lessonTextBox" layoutX="233.0" layoutY="71.0" maxWidth="150.0" />
-                              <TextField fx:id="courseTypeTextBox" layoutX="233.0" layoutY="119.0" prefHeight="25.0" prefWidth="150.0" />
-                              <Button fx:id="registerlessonbutton" layoutX="219.0" layoutY="238.0" mnemonicParsing="false" onAction="#registerLesson" prefHeight="25.0" prefWidth="202.0" text="Óra hozzáadása" />
-                              <TextField fx:id="skipsLeft" layoutX="233.0" layoutY="164.0" prefHeight="25.0" prefWidth="36.0" text="3" />
+                              <Text layoutX="100.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra neve:" textAlignment="RIGHT" wrappingWidth="143.302734375" />
+                              <Text layoutX="98.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kurzus Típusa:" textAlignment="RIGHT" wrappingWidth="146.318359375" />
+                              <Text layoutX="108.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hátralévő hiányzásaid:" textAlignment="RIGHT" wrappingWidth="145.919921875" />
+                              <TextField fx:id="lessonTextBox" layoutX="272.0" layoutY="80.0" maxWidth="150.0" />
+                              <TextField fx:id="courseTypeTextBox" layoutX="271.0" layoutY="128.0" prefHeight="25.0" prefWidth="150.0" />
+                              <Button fx:id="registerlessonbutton" layoutX="271.0" layoutY="220.0" mnemonicParsing="false" onAction="#registerLesson" prefHeight="25.0" prefWidth="152.0" text="Óra hozzáadása" />
+                              <TextField fx:id="skipsLeft" layoutX="270.0" layoutY="172.0" prefHeight="25.0" prefWidth="36.0" text="3" />
+                              <ComboBox fx:id="removeComboBox" layoutX="209.0" layoutY="366.0" prefHeight="25.0" prefWidth="215.0" promptText="Óra kiválasztása" />
+                              <Button fx:id="removeButton" layoutX="260.0" layoutY="409.0" mnemonicParsing="false" onAction="#removeLesson" prefHeight="25.0" prefWidth="113.0" text="Óra törlése" />
+                              <Line endX="533.0" layoutX="115.0" layoutY="275.0" startX="-115.0" />
+                              <ImageView fitHeight="84.0" fitWidth="64.0" layoutX="44.0" layoutY="14.0" opacity="0.73" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/addlogo.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="88.0" fitWidth="64.0" layoutX="44.0" layoutY="295.0" opacity="0.73" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/removelogo.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="130.0" layoutY="50.0" opacity="0.73" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra hozzáadása">
+                                 <font>
+                                    <Font name="Calibri" size="18.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="130.0" layoutY="331.0" opacity="0.73" strokeType="OUTSIDE" strokeWidth="0.0" text="Óra törlése">
+                                 <font>
+                                    <Font name="Calibri" size="18.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </AnchorPane>
                   </content>
@@ -108,9 +134,14 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="filebrowsebutton" layoutX="269.0" layoutY="93.0" mnemonicParsing="false" onAction="#browseFile" text="Tallózás" />
-                              <Button fx:id="importfromfilebutton" disable="true" layoutX="218.0" layoutY="186.0" mnemonicParsing="false" onAction="#importTimeTable" text="Órarend importálása fájlból" />
-                              <Label fx:id="filenamelabel" layoutX="192.0" layoutY="130.0" prefHeight="17.0" prefWidth="221.0" text="Kérlek, először tallózd be az órarendfájlt!" />
+                              <Button fx:id="filebrowsebutton" layoutX="220.0" layoutY="166.0" mnemonicParsing="false" onAction="#browseFile" text="Tallózás" />
+                              <Button fx:id="importfromfilebutton" disable="true" layoutX="234.0" layoutY="244.0" mnemonicParsing="false" onAction="#importTimeTable" prefHeight="34.0" prefWidth="181.0" text="Órarend importálása fájlból" />
+                              <Label fx:id="filenamelabel" layoutX="294.0" layoutY="170.0" prefHeight="17.0" prefWidth="221.0" text="Kérlek, először tallózd be az órarendfájlt!" />
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="56.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/folder.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                     </content>

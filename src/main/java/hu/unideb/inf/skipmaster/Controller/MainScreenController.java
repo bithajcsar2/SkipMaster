@@ -11,6 +11,7 @@ import hu.unideb.inf.skipmaster.Course;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -26,12 +27,14 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -60,6 +63,12 @@ public class MainScreenController implements Initializable {
     private Button importfromfilebutton;
     @FXML
     private GridPane table;
+    @FXML
+    private Text syncDoneText;
+    @FXML
+    private ComboBox removeComboBox;
+    @FXML
+    private Button removeButton;
     
     File timetable; // ezt adja vissza a fájlmegnyitó alprogram
     
@@ -122,11 +131,8 @@ public class MainScreenController implements Initializable {
         fillTable(table, course, course_type, numberOfSkips, skipBtn, addBtn);
 
         localVersion++;
-        
-        /* 
-            Itt kellene implementálni az új óra felvételét az adatbázisba
-        
-        */
+        syncDoneText.setVisible(false);
+      
     }
 
     @FXML
@@ -156,10 +162,11 @@ public class MainScreenController implements Initializable {
         }
         loadDataFromFile(timetable.getPath());
         loadTable(false);
-        /*
-            Ide kellene implementálni a fájlból importálást
-            A fájlra a 'timetable' változóval tudsz hivatkozni
-        */
+        syncDoneText.setVisible(false);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Információ");
+        alert.setContentText("Órarend importálva!");
+        alert.showAndWait();
     }
     
     private void fillTable(GridPane table, Label course, Label course_type, Label remainingSkips, Button skipBtn, Button addBtn){
@@ -311,13 +318,14 @@ public class MainScreenController implements Initializable {
     }
     
     @FXML
-    private void syncWithDB () 
+    private void syncWithDB ()
     {
         /*
             Szinkronizálás gomb nyomására hívódik meg. Lekérdezi az adatokat, és megjeleníti az UI-on. 
             Egyelőre nincs mit szinkronizálni XD
         */
         loadTable(true);
+        syncDoneText.setVisible(true);
         
     }
     
@@ -372,7 +380,8 @@ public class MainScreenController implements Initializable {
             localVersion++;
         }catch(Exception e){
             System.out.println(e);
-        }        
+        }
+        
     }
     
     private void Skipped(String course, String course_type){
@@ -383,6 +392,8 @@ public class MainScreenController implements Initializable {
         }
         localVersion++;
         loadTable(false);
+        syncDoneText.setVisible(false);
+        
     }
      private void Added(String course, String course_type){
         for(Course c : courses){
@@ -392,5 +403,12 @@ public class MainScreenController implements Initializable {
         }
         localVersion++;
         loadTable(false);
+        syncDoneText.setVisible(false);
+    }
+     
+    @FXML
+    private void removeLesson()
+    {
+        
     }
 }
