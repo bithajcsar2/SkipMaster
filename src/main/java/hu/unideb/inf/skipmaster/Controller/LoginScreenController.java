@@ -39,7 +39,6 @@ public class LoginScreenController implements Initializable {
     private Text databaseOKText;
     
     public static String userLoggedIn; //A bejelentkezett user felhasználóneve
-    
             
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -140,16 +139,21 @@ public class LoginScreenController implements Initializable {
         }
     }
 
+    Parent root2 = null; //hogy csak egy egyszer lehessen a regisztrációs ablakot megnyitni
     @FXML
     private void registerNowButtonPressed(ActionEvent event) throws IOException 
     {
-        Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/RegisterScreen.fxml"));
+        if (root2 == null)
+        {
+        root2 = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/RegisterScreen.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Regisztráció");
         Scene scene = new Scene(root2);
         scene.getStylesheets().add("/styles/Styles.css");
         stage.setScene(scene);
-        stage.show();
+        stage.showAndWait();
+        root2 = null;
+        }
     }
 }
 
