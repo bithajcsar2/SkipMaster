@@ -97,6 +97,7 @@ public class MainScreenController implements Initializable {
             syncWithDB();
         }
         connector.closeConnection();
+        refreshCourseListForComboBox();
     }    
 
     @FXML
@@ -326,7 +327,7 @@ public class MainScreenController implements Initializable {
         */
         loadTable(true);
         syncDoneText.setVisible(true);
-        
+        refreshCourseListForComboBox();    
     }
     
      private void loadDataFromFile(String path){
@@ -409,6 +410,38 @@ public class MainScreenController implements Initializable {
     @FXML
     private void removeLesson()
     {
-        
+        int index = -1;
+        String[] toRemove = removeComboBox.getValue().toString().split(">");
+        for (Course course : courses) 
+        {
+            if (course.getCourse().equals(toRemove[0]) && course.getCourse_type().equals(toRemove[1]))
+            {
+                index = courses.indexOf(course); 
+            }
+        }
+        if (index >= 0)
+            courses.remove(index);
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Hiba");
+            alert.setContentText("Nem létezik ilyen kurzus az adatbázisban!");
+            alert.showAndWait();
+        }
+        refreshCourseListForComboBox();
+        /////////////
+        syncWithDB(); //itt kellene szinkronizálni
+        ////////////
+    }
+    
+    private void refreshCourseListForComboBox()
+    {
+        removeComboBox.getItems().clear();
+        int loopVar = 0;
+        for (Course course : courses) 
+        {
+            removeComboBox.getItems().add(loopVar, course.getCourse() + ">" + course.getCourse_type());
+            loopVar++;
+        }
     }
 }
