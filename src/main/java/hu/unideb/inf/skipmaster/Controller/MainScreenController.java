@@ -73,7 +73,7 @@ public class MainScreenController implements Initializable {
     File timetable; // ezt adja vissza a fájlmegnyitó alprogram
     
     private int numberOfCourses;
-    private int localVersion; //fájlból
+    private int localVersion; 
     private int remoteVersion;
     
     private List<Course> courses = new ArrayList<>();
@@ -438,9 +438,8 @@ public class MainScreenController implements Initializable {
             alert.setContentText("Nem létezik ilyen kurzus az adatbázisban!");
             alert.showAndWait();
         }
+        localVersion++;
         refreshCourseListForComboBox();
-        /////////////
-        syncWithDB(); //itt kellene szinkronizálni
         ////////////
     }
     
