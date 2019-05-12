@@ -190,15 +190,6 @@ public class MainScreenController implements Initializable {
             remainingSkips.setTextFill(Color.RED);
             skipBtn.setTextFill(Color.RED);
             skipBtn.setDisable(true);
-            File cross = new File("src/main/resources/images/hideThePain.png");
-            Image hideThePain = new Image(cross.toURI().toString());
-            ImageView imageView = new ImageView(hideThePain);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setGraphic(imageView);
-            alert.setTitle("Oh shit waddup!");
-            alert.setHeaderText(null);
-            alert.setContentText("Mostmár be kell járnod órára te lusta iskolakerülő!");
-            alert.showAndWait();
             
         }
         table.add(skipBtn, 3, numberOfCourses);
@@ -400,8 +391,21 @@ public class MainScreenController implements Initializable {
     
     private void Skipped(String course, String course_type){
         for(Course c : courses){
-            if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type)){
+            if(c.getCourse().equals(course) && c.getCourse_type().equals(course_type))
+            {
                 c.setNumberOfSkips(c.getNumberOfSkips()-1);
+                if (c.getNumberOfSkips() == 0)
+                {
+                    File hTPH = new File("src/main/resources/images/hideThePain.png");
+                    Image hideThePain = new Image(hTPH.toURI().toString());
+                    ImageView imageView = new ImageView(hideThePain);
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setGraphic(imageView);
+                    alert.setTitle("Oh shit waddup!");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Most már be kell járnod órára te lusta iskolakerülő!");
+                    alert.showAndWait();
+                }
             }
         }
         localVersion++;
